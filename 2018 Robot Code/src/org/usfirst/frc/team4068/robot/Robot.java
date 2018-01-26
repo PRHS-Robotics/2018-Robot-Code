@@ -143,6 +143,15 @@ public class Robot extends IterativeRobot {
     	} else {
     		climPneu.set(false);
     	}
+    	
+    	if (xBox.getRawAxis(3) > .5) {
+    		grabPneu.set(DoubleSolenoid.Value.kForward);
+    	} else if (xBox.getRawAxis(2) > .5) {
+    		grabPneu.set(DoubleSolenoid.Value.kReverse);
+    	} else {
+    		grabPneu.set(DoubleSolenoid.Value.kOff);
+    	}
+    	
 	}
 
 	
