@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 import org.usfirst.frc.team4068.robot.subsystems.ClimberExtension;
+import org.usfirst.frc.team4068.robot.subsystems.Clamp;
 
 import org.usfirst.frc.team4068.robot.commands.ExampleCommand;
 import org.usfirst.frc.team4068.robot.subsystems.DriveTrain;
@@ -34,14 +35,16 @@ public class Robot extends IterativeRobot {
 	private RobotDrive drive;
 	DriveTrain mainDrive = new DriveTrain();
 	ClimberExtension climb = new ClimberExtension();
+	Clamp screwDrive = new Clamp();
 	//Compressor compressor = new Compressor();
-	Solenoid climPneu = new Solenoid(0);
-	DoubleSolenoid grabPneu = new DoubleSolenoid(0, 0);
+	//Solenoid climPneu = new Solenoid(0);
+	//DoubleSolenoid grabPneu = new DoubleSolenoid(0, 0);
 	
 	
 	
 	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 	public static OI oi;
+	int screwAxis;
 
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
@@ -56,6 +59,7 @@ public class Robot extends IterativeRobot {
 		chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
+		SmartDashboard.putNumber("screwAxis", screwAxis);
 	}
 
 	/**
@@ -125,11 +129,17 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		
+		
+		
 		//double exp = 1.0;
 		
 		double r = -driveStick.getAxis(Joystick.AxisType.kTwist);
     	double y = -driveStick.getAxis(Joystick.AxisType.kY);
     	double x = driveStick.getAxis(Joystick.AxisType.kX);
+    	
+    	SmartDashboard.putNumber("Y Input", y);
+    	SmartDashboard.putNumber("R Input", r);
+    	SmartDashboard.putNumber("x Input", x);
     	
     	/*
     	x = Math.signum(x) * Math.pow(Math.abs(x), exp);
@@ -138,6 +148,15 @@ public class Robot extends IterativeRobot {
 		*/
     	mainDrive.drive((Math.abs(x)>.2)?x:0, (Math.abs(y)>.2)?y:0, (Math.abs(r)>.1)?r:0);
     	
+    	//double s = xBox.getRawAxis(SmartDashboard.getNumber("screwAxis", 1));
+    	double s = -xBox.getRawAxis(1);
+    	
+    	
+    	screwDrive.screw((Math.abs(s)>.1)?s:0);
+    	
+    	
+    	
+    	/*
     	if (xBox.getRawButton(0)) {
     		climPneu.set(true);
     	} else {
@@ -151,7 +170,7 @@ public class Robot extends IterativeRobot {
     	} else {
     		grabPneu.set(DoubleSolenoid.Value.kOff);
     	}
-    	
+*/    	
 	}
 
 	
