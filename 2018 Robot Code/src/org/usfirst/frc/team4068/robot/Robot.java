@@ -17,6 +17,7 @@ import org.usfirst.frc.team4068.robot.subsystems.ClimberExtension;
 import org.usfirst.frc.team4068.robot.subsystems.Clamp;
 
 import org.usfirst.frc.team4068.robot.commands.ExampleCommand;
+import org.usfirst.frc.team4068.robot.commands.FAutoCommand;
 import org.usfirst.frc.team4068.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4068.robot.subsystems.ExampleSubsystem;
 import java.io.ByteArrayInputStream;
@@ -60,6 +61,7 @@ public class Robot extends IterativeRobot {
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
 		SmartDashboard.putNumber("screwAxis", screwAxis);
+		SmartDashboard.putNumber("FAutoPower", .7);
 	}
 
 	/**
@@ -92,12 +94,16 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 		autonomousCommand = chooser.getSelected();
 
-		/*
-		 * String autoSelected = SmartDashboard.getString("Auto Selector",
-		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-		 * = new MyAutoCommand(); break; case "Default Auto": default:
-		 * autonomousCommand = new ExampleCommand(); break; }
-		 */
+		
+		  String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
+		  switch(autoSelected) { 
+		  case "My Auto":
+			  autonomousCommand = new FAutoCommand(); 
+			  break;
+		  case "Default Auto": 
+			  default:
+		  autonomousCommand = new ExampleCommand(); break; }
+		 
 
 		// schedule the autonomous command (example)
 		if (autonomousCommand != null)
@@ -114,13 +120,10 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void teleopInit() {
-		// This makes sure that the autonomous stops running when
-		// teleop starts running. If you want the autonomous to
-		// continue until interrupted by another command, remove
-		// this line or comment it out.
+	
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
-	} //because i can.
+	} 
 
 	/**
 	 * This function is called periodically during operator control
@@ -169,8 +172,7 @@ public class Robot extends IterativeRobot {
     		grabPneu.set(DoubleSolenoid.Value.kReverse);
     	} else {
     		grabPneu.set(DoubleSolenoid.Value.kOff);
-    	}
-*/    	
+    	}*/
 	}
 
 	

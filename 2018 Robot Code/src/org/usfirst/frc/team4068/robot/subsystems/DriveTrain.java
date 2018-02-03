@@ -27,11 +27,8 @@ public class DriveTrain {
 		SmartDashboard.putNumber("LBM", LBM); // -1 base
 		SmartDashboard.putNumber("LFM", LFM); //         (regular 1)
 	}
-	
-	
-	
-	public void drive(double x, double y, double r){
-		double rfpower, rbpower, lbpower, lfpower, rrfpower, rrbpower, rlbpower, rlfpower;
+			public void drive(double x, double y, double r){
+		double rfpower, rbpower, lbpower, lfpower;//, rrfpower, rrbpower, rlbpower, rlfpower;
 		/*
 		if (r >= 0 ) {
 			rlfpower = (Math.pow(100, r) - 1) / (99);

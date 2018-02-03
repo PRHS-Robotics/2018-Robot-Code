@@ -12,7 +12,7 @@ public class Clamp {
 		
 		screwD.setInverted(false);
 		
-		SmartDashboard.putNumber("screwM", screwM);
+		SmartDashboard.putNumber("screwM: ", screwM);
 	}
 	
 	
@@ -28,7 +28,7 @@ public class Clamp {
 		SmartDashboard.putNumber("switchPower", sPow);
 		
 		screwD.set(sPow);
-	
+		
 	}
 	
 }
