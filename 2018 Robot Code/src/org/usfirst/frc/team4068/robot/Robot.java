@@ -12,13 +12,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DriverStation;
 
 import org.usfirst.frc.team4068.robot.subsystems.ClimberExtension;
 import org.usfirst.frc.team4068.robot.subsystems.Clamp;
 
 import org.usfirst.frc.team4068.robot.commands.ExampleCommand;
+import org.usfirst.frc.team4068.robot.commands.ForwardAuto;
 import org.usfirst.frc.team4068.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4068.robot.subsystems.ExampleSubsystem;
+import org.usfirst.frc.team4068.robot.subsystems.Winch;
+
 import java.io.ByteArrayInputStream;
 
 /**
@@ -36,9 +40,10 @@ public class Robot extends IterativeRobot {
 	DriveTrain mainDrive = new DriveTrain();
 	ClimberExtension climb = new ClimberExtension();
 	Clamp screwDrive = new Clamp();
+	Winch winch = new Winch();
 	//Compressor compressor = new Compressor();
-	//Solenoid climPneu = new Solenoid(0);
-	//DoubleSolenoid grabPneu = new DoubleSolenoid(0, 0);
+	Solenoid climPneu = new Solenoid(1);
+	//DoubleSolenoid grabPneu = new DoubleSolenoid(2, 3);
 	
 	
 	
@@ -98,7 +103,7 @@ public class Robot extends IterativeRobot {
 		  String autoSelected = SmartDashboard.getString("Auto Selector", "Default"); 
 		  switch(autoSelected) { 
 		  case "My Auto": 
-	//		  autonomousCommand = new MyAutoCommand(); 
+			  autonomousCommand = new ForwardAuto(); 
 			  break; 
 		  case "Default Auto": 
 			  default:
@@ -117,9 +122,17 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
+		String gameData;
+		gameData = DriverStation.getInstance().getGameSpecificMessage();
+		if(gameData.charAt(0) == 'L')
+		{
+			//Put left auto code here
+		} else {
+			//Put right auto code here
+		}
 		Scheduler.getInstance().run();
 	}
-
+	
 	@Override
 	public void teleopInit() {
 		// This makes sure that the autonomous stops running when
@@ -128,7 +141,7 @@ public class Robot extends IterativeRobot {
 		// this line or comment it out.
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
-	} //because i can.
+	} 
 
 	/**
 	 * This function is called periodically during operator control
@@ -159,26 +172,33 @@ public class Robot extends IterativeRobot {
     	//double s = xBox.getRawAxis(SmartDashboard.getNumber("screwAxis", 1));
     	double s = -xBox.getRawAxis(1);
     	
+    	double w = xBox.getRawAxis(5);
+    	
+    	winch.coil((Math.abs(w)>.2)?w:0);
     	
     	screwDrive.screw((Math.abs(s)>.1)?s:0);
     	
     	
     	
-    	/*
+    	
     	if (xBox.getRawButton(0)) {
     		climPneu.set(true);
     	} else {
     		climPneu.set(false);
     	}
     	
-    	if (xBox.getRawAxis(3) > .5) {
-    		grabPneu.set(DoubleSolenoid.Value.kForward);
-    	} else if (xBox.getRawAxis(2) > .5) {
-    		grabPneu.set(DoubleSolenoid.Value.kReverse);
-    	} else {
-    		grabPneu.set(DoubleSolenoid.Value.kOff);
-    	}
-*/    	
+    	
+    	
+//    	if (xBox.getRawAxis(3) > .5) {
+//    		grabPneu.set(DoubleSolenoid.Value.kForward);
+//    	} else if (xBox.getRawAxis(2) > .5) {
+//    		grabPneu.set(DoubleSolenoid.Value.kReverse);
+//    	} else {
+//    		grabPneu.set(DoubleSolenoid.Value.kOff);
+//    	}
+    	
+    	
+    	
 	}
 
 	

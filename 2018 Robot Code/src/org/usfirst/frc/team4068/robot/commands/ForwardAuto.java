@@ -19,6 +19,7 @@ public class ForwardAuto extends Command {
 	public ForwardAuto() {
 		// Use requires() here to declare subsystem dependencies
 		requires(Robot.exampleSubsystem);
+		//requires(mainDrive);
 	}
 
 	// Called just before this Command runs the first time
@@ -36,6 +37,9 @@ public class ForwardAuto extends Command {
 		SmartDashboard.putNumber("timer", t);
 		if (t < a) {
 			mainDrive.drive(0, d, 0);
+		} else {
+			mainDrive.drive(0, 0, 0);
+			end();
 		}
 		
 	}

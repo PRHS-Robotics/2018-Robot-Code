@@ -25,6 +25,14 @@ public class Clamp {
 		
 		double sPow = s * screwM;
 		
+		
+		if (sPow < 0) {
+			sPow = sPow * .5;
+		} else if (sPow > 0){
+			sPow = sPow * .3;
+		}
+		//sPow = sPow * .3;
+		
 		SmartDashboard.putNumber("switchPower", sPow);
 		
 		screwD.set(sPow);
