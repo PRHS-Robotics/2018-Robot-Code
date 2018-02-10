@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Sonar {
 	
-	private AnalogInput sonar = new AnalogInput(0);
+	private AnalogInput sonar = new AnalogInput(1);
 	
 	/** gets distance from sonar thing and puts it on
 	 *  SmartDashboard and returns it as a double

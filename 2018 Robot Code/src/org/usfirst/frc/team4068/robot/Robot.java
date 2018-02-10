@@ -3,28 +3,25 @@ package org.usfirst.frc.team4068.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.PrintCommand;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DriverStation;
 
 import org.usfirst.frc.team4068.robot.subsystems.ClimberExtension;
 import org.usfirst.frc.team4068.robot.subsystems.Clamp;
-//import org.usfirst.frc.team4068.robot.subsystems.Sonar;
+import org.usfirst.frc.team4068.robot.subsystems.Sonar;
 import org.usfirst.frc.team4068.robot.commands.ExampleCommand;
-import org.usfirst.frc.team4068.robot.commands.ForwardAuto;
 import org.usfirst.frc.team4068.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4068.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team4068.robot.subsystems.Winch;
-//import org.usfirst.frc.team4068.robot.subsystems.AutoClass;
+import org.usfirst.frc.team4068.robot.subsystems.AutoClass;
 
-import java.io.ByteArrayInputStream;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -37,15 +34,15 @@ public class Robot extends IterativeRobot {
 
 	Joystick driveStick = new Joystick(1);
 	Joystick xBox = new Joystick(2);
-	private RobotDrive drive;
 	DriveTrain mainDrive = new DriveTrain();
 	ClimberExtension climb = new ClimberExtension();
 	Clamp screwDrive = new Clamp();
 	Winch winch = new Winch();
-	//Compressor compressor = new Compressor();
+	Compressor compressor = new Compressor();
 	Solenoid climPneu = new Solenoid(1);
 	DoubleSolenoid grabPneu = new DoubleSolenoid(2, 3);
 	//AutoClass aut = new AutoClass();
+	Sonar sonar = new Sonar();
 	
 	
 	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
@@ -69,6 +66,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("AutoSpeed", 0.7);
 		SmartDashboard.putNumber("AutoTime", 200);
 		SmartDashboard.putString("AutoVersion (for , basic)", "Basic");
+		SmartDashboard.putNumber("SonarMM", sonar.getDistancemm());
 		//aut.auto(0.0, false);
 	}
 
@@ -146,7 +144,11 @@ public class Robot extends IterativeRobot {
 		// this line or comment it out.
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
-		//aut.auto(SmartDashboard.getNumber("AutoSpeed", 0.7), false);
+		//aut.auto(0.0, false);
+		compressor.setClosedLoopControl(true);
+		PrintCommand test = new PrintCommand("Hello, World!");
+		System.out.println("Testing testing testing");
+		SmartDashboard.putNumber("Something", 42);
 	} 
 
 	/**
@@ -224,6 +226,5 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
-		LiveWindow.run();
 	} 
 }
