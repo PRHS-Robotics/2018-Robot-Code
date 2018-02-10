@@ -11,10 +11,10 @@ public class Sonar {
 	 */
 	public double getDistancemm() {
 		double voltage = sonar.getVoltage();
+		SmartDashboard.putNumber("SVoltage", voltage);
 		double sensitivity = 6/5120;
-		
 		double mm = sensitivity * voltage;
-		SmartDashboard.putNumber("distance mm", mm);
+		SmartDashboard.putNumber("SonarMM", mm);
 		return mm;
 		
 	}
