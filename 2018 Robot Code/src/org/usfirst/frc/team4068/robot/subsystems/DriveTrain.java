@@ -27,13 +27,15 @@ public class DriveTrain {
 	double deadzone = 0.1;
 	
 	public DriveTrain(){
-	
+		drive.setDeadband(0.0);
+		
 		SmartDashboard.putNumber("RFM", RFM); // -1 base
 		SmartDashboard.putNumber("RBM", RBM); //         (regular 1) 
 		SmartDashboard.putNumber("LBM", LBM); // -1 base
 		SmartDashboard.putNumber("LFM", LFM); //         (regular 1)
 		
 		SmartDashboard.putNumber("Input Curve", inputCurve);
+		SmartDashboard.putNumber("Deadzone", deadzone);
 	}
 	
 	
@@ -44,6 +46,9 @@ public class DriveTrain {
 		RFM = SmartDashboard.getNumber("RFM", 1);
 		RBM = SmartDashboard.getNumber("RBM", 1);
 		
+		inputCurve = SmartDashboard.getNumber("Input Curve", 2);
+		deadzone = SmartDashboard.getNumber("Deadzone", deadzone);
+		
 		// Apply deadzone
 		x = (Math.abs(x) < deadzone) ? 0 : x;
 		y = (Math.abs(y) < deadzone) ? 0 : y;
@@ -51,8 +56,6 @@ public class DriveTrain {
 		
 		double lfpower = y - r;
 		double rfpower = y + r;
-		
-		inputCurve = SmartDashboard.getNumber("Input Curve", 2);
 		
 		// Apply curved
 		lfpower = Math.signum(lfpower) * (Math.pow(inputCurve, Math.abs(lfpower)) - 1) / (inputCurve - 1);
@@ -63,7 +66,4 @@ public class DriveTrain {
 		
 		drive.tankDrive(rfpower * RFM, lfpower * LFM, false);
 	}
-	
-	
-	
 }

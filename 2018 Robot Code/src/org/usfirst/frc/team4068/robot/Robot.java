@@ -41,7 +41,7 @@ public class Robot extends IterativeRobot {
 	Compressor compressor = new Compressor();
 	Solenoid climPneu = new Solenoid(1);
 	DoubleSolenoid grabPneu = new DoubleSolenoid(2, 3);
-	//AutoClass aut = new AutoClass();
+	AutoClass aut = new AutoClass(mainDrive);
 	Sonar sonar = new Sonar();
 	
 	
@@ -67,7 +67,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("AutoTime", 200);
 		SmartDashboard.putString("AutoVersion (for , basic)", "Basic");
 		SmartDashboard.putNumber("SonarMM", sonar.getDistancemm());
-		//aut.auto(0.0, false);
+		aut.auto(0.0, false);
 	}
 
 	/**
@@ -133,7 +133,7 @@ public class Robot extends IterativeRobot {
 //		}
 //		Scheduler.getInstance().run();
 //		
-		//aut.auto(SmartDashboard.getNumber("AutoSpeed", 0.7), true);
+		aut.auto(SmartDashboard.getNumber("AutoSpeed", 0.7), true);
 	}
 	
 	@Override
@@ -144,11 +144,8 @@ public class Robot extends IterativeRobot {
 		// this line or comment it out.
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
-		//aut.auto(0.0, false);
+		aut.auto(0.0, false);
 		compressor.setClosedLoopControl(true);
-		PrintCommand test = new PrintCommand("Hello, World!");
-		System.out.println("Testing testing testing");
-		SmartDashboard.putNumber("Something", 42);
 	} 
 
 	/**
@@ -176,7 +173,7 @@ public class Robot extends IterativeRobot {
     	y = Math.signum(y) * Math.pow(Math.abs(y), exp);
     	r = Math.signum(r) * Math.pow(Math.abs(r), exp);
 		*/
-    	mainDrive.drive((Math.abs(x)>.2)?x:0, (Math.abs(y)>.2)?y:0, (Math.abs(r)>.1)?r:0);
+    	mainDrive.drive(x, y, r);
     	
     	//double s = xBox.getRawAxis(SmartDashboard.getNumber("screwAxis", 1));
     	double s = -xBox.getRawAxis(1);
@@ -186,9 +183,6 @@ public class Robot extends IterativeRobot {
     	winch.coil((Math.abs(w)>.2)?w:0);
     	
     	screwDrive.screw((Math.abs(s)>.1)?s:0);
-    	
-    	
-    	
     	
     	if (xBox.getRawButton(1)) {
     		climPneu.set(true);

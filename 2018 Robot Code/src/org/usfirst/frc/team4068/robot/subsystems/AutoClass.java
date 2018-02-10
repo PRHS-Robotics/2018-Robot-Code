@@ -1,7 +1,15 @@
 package org.usfirst.frc.team4068.robot.subsystems;
 public class AutoClass {
-	DriveTrain mainDrive = new DriveTrain();
+	DriveTrain mainDrive;
 	Sonar sonar = new Sonar();
+	
+	public AutoClass(DriveTrain driveTrain) {
+		this.mainDrive = driveTrain;
+	}
+	
+	public AutoClass() {
+		this.mainDrive = new DriveTrain();
+	}
 	
 	public void auto(double pow, boolean run) {
 		
