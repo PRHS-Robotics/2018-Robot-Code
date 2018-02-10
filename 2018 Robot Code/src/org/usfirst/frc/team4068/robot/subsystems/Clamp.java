@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Clamp {
 
-	Talon screwD = new Talon(5);
+	Talon screwD = new Talon(1);
 	
 	double screwM = 1;
 	
@@ -25,11 +25,13 @@ public class Clamp {
 		
 		double sPow = s * screwM;
 		
+		sPow = Math.pow(sPow, 3);
+		
 		
 		if (sPow < 0) {
-			sPow = sPow * .5;
+			sPow = sPow * .4;
 		} else if (sPow > 0){
-			sPow = sPow * .3;
+			sPow = sPow * .2;
 		}
 		//sPow = sPow * .3;
 		

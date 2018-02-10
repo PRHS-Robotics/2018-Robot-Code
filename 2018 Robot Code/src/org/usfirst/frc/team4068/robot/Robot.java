@@ -16,12 +16,13 @@ import edu.wpi.first.wpilibj.DriverStation;
 
 import org.usfirst.frc.team4068.robot.subsystems.ClimberExtension;
 import org.usfirst.frc.team4068.robot.subsystems.Clamp;
-
+//import org.usfirst.frc.team4068.robot.subsystems.Sonar;
 import org.usfirst.frc.team4068.robot.commands.ExampleCommand;
 import org.usfirst.frc.team4068.robot.commands.ForwardAuto;
 import org.usfirst.frc.team4068.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4068.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team4068.robot.subsystems.Winch;
+//import org.usfirst.frc.team4068.robot.subsystems.AutoClass;
 
 import java.io.ByteArrayInputStream;
 
@@ -43,8 +44,8 @@ public class Robot extends IterativeRobot {
 	Winch winch = new Winch();
 	//Compressor compressor = new Compressor();
 	Solenoid climPneu = new Solenoid(1);
-	//DoubleSolenoid grabPneu = new DoubleSolenoid(2, 3);
-	
+	DoubleSolenoid grabPneu = new DoubleSolenoid(2, 3);
+	//AutoClass aut = new AutoClass();
 	
 	
 	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
@@ -67,6 +68,8 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("screwAxis", screwAxis);
 		SmartDashboard.putNumber("AutoSpeed", 0.7);
 		SmartDashboard.putNumber("AutoTime", 200);
+		SmartDashboard.putString("AutoVersion (for , basic)", "Basic");
+		//aut.auto(0.0, false);
 	}
 
 	/**
@@ -96,25 +99,25 @@ public class Robot extends IterativeRobot {
 	 * to the switch structure below with additional strings & commands.
 	 */
 	@Override
-	public void autonomousInit() {
-		autonomousCommand = chooser.getSelected();
-
-		
-		  String autoSelected = SmartDashboard.getString("Auto Selector", "Default"); 
-		  switch(autoSelected) { 
-		  case "My Auto": 
-			  autonomousCommand = new ForwardAuto(); 
-			  break; 
-		  case "Default Auto": 
-			  default:
-		  autonomousCommand = new ExampleCommand();
-		  break; 
-		  }
-		 
-
-		// schedule the autonomous command (example)
-		if (autonomousCommand != null)
-			autonomousCommand.start();
+	public void autonomousInit() {		
+//		autonomousCommand = chooser.getSelected();
+//
+//		
+//		  String autoSelected = SmartDashboard.getString("Auto Selector", "Default"); 
+//		  switch(autoSelected) { 
+//		  case "My Auto": 
+//			  autonomousCommand = new ForwardAuto(); 
+//			  break; 
+//		  case "Default Auto": 
+//			  default:
+//		  autonomousCommand = new ExampleCommand();
+//		  break; 
+//		  }
+//		 
+//
+//		// schedule the autonomous command (example)
+//		if (autonomousCommand != null)
+//			autonomousCommand.start();
 	}
 
 	/**          
@@ -122,15 +125,17 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-		String gameData;
-		gameData = DriverStation.getInstance().getGameSpecificMessage();
-		if(gameData.charAt(0) == 'L')
-		{
-			//Put left auto code here
-		} else {
-			//Put right auto code here
-		}
-		Scheduler.getInstance().run();
+//		String gameData;
+//		gameData = DriverStation.getInstance().getGameSpecificMessage();
+//		if(gameData.charAt(0) == 'L')
+//		{
+//			//Put left auto code here
+//		} else {
+//			//Put right auto code here
+//		}
+//		Scheduler.getInstance().run();
+//		
+		//aut.auto(SmartDashboard.getNumber("AutoSpeed", 0.7), true);
 	}
 	
 	@Override
@@ -141,6 +146,7 @@ public class Robot extends IterativeRobot {
 		// this line or comment it out.
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
+		//aut.auto(SmartDashboard.getNumber("AutoSpeed", 0.7), false);
 	} 
 
 	/**
@@ -154,9 +160,10 @@ public class Robot extends IterativeRobot {
 		
 		//double exp = 1.0;
 		
-		double r = -driveStick.getAxis(Joystick.AxisType.kTwist);
-    	double y = -driveStick.getAxis(Joystick.AxisType.kY);
-    	double x = driveStick.getAxis(Joystick.AxisType.kX);
+
+		double r = -driveStick.getTwist();
+		double y = -driveStick.getY();
+		double x =  driveStick.getX();
     	
     	SmartDashboard.putNumber("Y Input", y);
     	SmartDashboard.putNumber("R Input", r);
@@ -181,21 +188,31 @@ public class Robot extends IterativeRobot {
     	
     	
     	
-    	if (xBox.getRawButton(0)) {
+    	if (xBox.getRawButton(1)) {
     		climPneu.set(true);
     	} else {
-    		climPneu.set(false);
+    		climPneu.set( false);
+    	}
+    	
+    	SmartDashboard.putNumber("Double Solenoid KForward", 0);
+    	SmartDashboard.putNumber("Double Solenoid KReverse", 0);
+    	SmartDashboard.putNumber("Double Solenoid KOff", 0);
+    	
+    	if (xBox.getRawAxis(2) > .5) {
+    		SmartDashboard.putNumber("Double Solenoid KForward", 1);
+    		grabPneu.set(DoubleSolenoid.Value.kForward);
+    		//System.out.println("Double SOlenoid KForward");
+    	} else if (xBox.getRawAxis(3) > .5) {
+    		SmartDashboard.putNumber("Double Solenoid KReverse", 1);
+    		grabPneu.set(DoubleSolenoid.Value.kReverse);
+    		//System.out.println("Double SOlenoid KReverse");
+    	} else {
+    		SmartDashboard.putNumber("Double Solenoid KOff", 1);
+    		grabPneu.set(DoubleSolenoid.Value.kOff);
+    		//System.out.println("Double SOlenoid KOff");
     	}
     	
     	
-    	
-//    	if (xBox.getRawAxis(3) > .5) {
-//    		grabPneu.set(DoubleSolenoid.Value.kForward);
-//    	} else if (xBox.getRawAxis(2) > .5) {
-//    		grabPneu.set(DoubleSolenoid.Value.kReverse);
-//    	} else {
-//    		grabPneu.set(DoubleSolenoid.Value.kOff);
-//    	}
     	
     	
     	

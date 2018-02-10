@@ -7,7 +7,7 @@ public class DriveTrain {
 
 	Talon LeftFront = new Talon(3);
 	Talon LeftBack = new Talon(4);
-	Talon RightFront = new Talon(1);
+	Talon RightFront = new Talon(5);
 	Talon RightBack = new Talon(2);
 	
 	double RFM = -1;
@@ -31,7 +31,7 @@ public class DriveTrain {
 	
 	
 	public void drive(double x, double y, double r){
-		double rfpower, rbpower, lbpower, lfpower, rrfpower, rrbpower, rlbpower, rlfpower;
+		double rfpower, rbpower, lbpower, lfpower, rAlt;// rrfpower, rrbpower, rlbpower, rlfpower;
 		/*
 		if (r >= 0 ) {
 			rlfpower = (Math.pow(100, r) - 1) / (99);
@@ -55,16 +55,17 @@ public class DriveTrain {
 		rbpower = -rfpower;
 		*/
 		
-		lfpower = y;
-		rfpower = y;
+		rAlt = Math.pow(r, 3);
 		
-		lfpower = lfpower - r;
-		rfpower = rfpower + r;
+		
+		lfpower = Math.pow(y, 3);
+		rfpower = Math.pow(y, 3);
+		
+		lfpower = lfpower - rAlt;
+		rfpower = rfpower + rAlt;
 		
 		rbpower = -rfpower;
 		lbpower = -lfpower;
-		
-		//hello James
 		
 		
 		
