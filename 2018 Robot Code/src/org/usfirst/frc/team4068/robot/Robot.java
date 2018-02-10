@@ -155,7 +155,7 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		
-		
+		SmartDashboard.putNumber("SonarMM", sonar.getDistancemm());
 		
 		//double exp = 1.0;
 		
