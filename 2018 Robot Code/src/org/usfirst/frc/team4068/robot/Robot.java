@@ -156,9 +156,6 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().run();
 		
 		SmartDashboard.putNumber("SonarMM", sonar.getDistancemm());
-		
-		//double exp = 1.0;
-		
 
 		double r = -driveStick.getTwist();
 		double y = -driveStick.getY();
@@ -168,11 +165,6 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("R Input", r);
     	SmartDashboard.putNumber("x Input", x);
     	
-    	/*
-    	x = Math.signum(x) * Math.pow(Math.abs(x), exp);
-    	y = Math.signum(y) * Math.pow(Math.abs(y), exp);
-    	r = Math.signum(r) * Math.pow(Math.abs(r), exp);
-		*/
     	mainDrive.drive(x, y, r);
     	
     	//double s = xBox.getRawAxis(SmartDashboard.getNumber("screwAxis", 1));
