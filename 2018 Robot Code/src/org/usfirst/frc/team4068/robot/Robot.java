@@ -155,7 +155,17 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		
+<<<<<<< HEAD
 		SmartDashboard.putNumber("SonarMM", sonar.getDistancemm());
+=======
+		
+		
+		
+		sonar.getDistancemm();
+		
+		//double exp = 1.0;
+		
+>>>>>>> 7d9a30ef8ba92081dac8772265f883aab8e081af
 
 		double r = -driveStick.getTwist();
 		double y = -driveStick.getY();
