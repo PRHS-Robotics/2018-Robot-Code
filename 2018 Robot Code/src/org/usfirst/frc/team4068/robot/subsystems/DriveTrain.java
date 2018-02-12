@@ -9,12 +9,12 @@ public class DriveTrain {
 	
 	DifferentialDrive drive = new DifferentialDrive(
 		new SpeedControllerGroup(new Talon(3), new Talon(4)),
-		new SpeedControllerGroup(new Talon(5), new Talon(2))
+		new SpeedControllerGroup(new Talon(1), new Talon(2))
 	);
 
 	/*Talon LeftFront = new Talon(3);
 	Talon LeftBack = new Talon(4);
-	Talon RightFront = new Talon(5);
+	Talon RightFront = new Talon(1);
 	Talon RightBack = new Talon(2);*/
 	
 	double RFM = -1;
@@ -54,8 +54,8 @@ public class DriveTrain {
 		y = (Math.abs(y) < deadzone) ? 0 : y;
 		r = (Math.abs(r) < deadzone) ? 0 : r;
 		
-		double lfpower = y - r;
-		double rfpower = y + r;
+		double lfpower = y + r;
+		double rfpower = -y + r;
 		
 		// Apply curved
 		lfpower = Math.signum(lfpower) * (Math.pow(inputCurve, Math.abs(lfpower)) - 1) / (inputCurve - 1);

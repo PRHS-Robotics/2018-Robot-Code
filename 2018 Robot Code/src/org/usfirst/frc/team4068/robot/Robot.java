@@ -41,8 +41,8 @@ public class Robot extends IterativeRobot {
 	Compressor compressor = new Compressor();
 	Solenoid climPneu = new Solenoid(1);
 	DoubleSolenoid grabPneu = new DoubleSolenoid(2, 3);
-	AutoClass aut = new AutoClass(mainDrive);
 	Sonar sonar = new Sonar();
+	AutoClass aut = new AutoClass(mainDrive, sonar);
 	
 	
 	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
