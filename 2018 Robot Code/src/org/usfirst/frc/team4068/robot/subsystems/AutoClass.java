@@ -8,19 +8,13 @@ public class AutoClass {
 		this.sonar = sonar;
 	}
 	
-	public AutoClass() {
-		this.mainDrive = new DriveTrain();
-	}
-	
-	public void auto(double pow, boolean run) {
-		
+	public void auto(double power, boolean run) {
 		if (run == true) {
-		if (sonar.getDistancemm() < 532) {
-			mainDrive.drive(0.0, 0.0, 0.0);
-		} else {
-			mainDrive.drive(0.0, pow, 0.0);
+			if (sonar.getDistancemm() < 532) {
+				mainDrive.drive(0.0, 0.0, 0.0);
+			} else {
+				mainDrive.drive(0.0, power, 0.0);
+			}
 		}
-		}
-		
 	}
 }

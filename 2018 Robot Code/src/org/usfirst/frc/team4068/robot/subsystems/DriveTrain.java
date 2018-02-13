@@ -22,7 +22,7 @@ public class DriveTrain {
 	double LBM = -1;
 	double LFM = 1;
 	
-	double inputCurve = 2;
+	double inputCurve = 5;
 	
 	double deadzone = 0.1;
 	
@@ -46,7 +46,7 @@ public class DriveTrain {
 		RFM = SmartDashboard.getNumber("RFM", 1);
 		RBM = SmartDashboard.getNumber("RBM", 1);
 		
-		inputCurve = SmartDashboard.getNumber("Input Curve", 2);
+		inputCurve = SmartDashboard.getNumber("Input Curve", inputCurve);
 		deadzone = SmartDashboard.getNumber("Deadzone", deadzone);
 		
 		// Apply deadzone

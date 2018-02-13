@@ -12,32 +12,23 @@ public class Clamp {
 		
 		screwD.setInverted(false);
 		
-		SmartDashboard.putNumber("screwM", screwM);
+		SmartDashboard.putNumber("Screw Sensitivity", screwM);
 	}
 	
 	
-	public void screw(double s){	
+	public void screw(double rawPower){
+		screwM = SmartDashboard.getNumber("Screw Sensitivity", 1);
 		
-		//double sPow = Math.pow(s, 3);
-		
-		
-		screwM = SmartDashboard.getNumber("screwM", 1);
-		
-		double sPow = s * screwM;
-		
-		sPow = Math.pow(sPow, 3);
+		double screwPower = Math.pow(rawPower * screwM, 3);
 		
 		
-		if (sPow < 0) {
-			sPow = sPow * .7;
-		} else if (sPow > 0){
-			sPow = sPow * .4;
+		if (screwPower < 0){
+			screwPower = screwPower * .25;
 		}
-		//sPow = sPow * .3;
 		
-		SmartDashboard.putNumber("switchPower", sPow);
+		SmartDashboard.putNumber("switchPower", screwPower);
 		
-		screwD.set(sPow);
+		screwD.set(screwPower);
 	
 	}
 	

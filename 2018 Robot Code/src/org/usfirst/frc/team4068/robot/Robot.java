@@ -22,7 +22,6 @@ import org.usfirst.frc.team4068.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team4068.robot.subsystems.Winch;
 import org.usfirst.frc.team4068.robot.subsystems.AutoClass;
 
-
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -43,18 +42,16 @@ public class Robot extends IterativeRobot {
 	DoubleSolenoid grabPneu = new DoubleSolenoid(2, 3);
 	Sonar sonar = new Sonar();
 	AutoClass aut = new AutoClass(mainDrive, sonar);
-	
-	
+
 	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 	public static OI oi;
-	int screwAxis;
 
 	Command autonomousCommand;
 	SendableChooser<Command> chooser = new SendableChooser<>();
 
 	/**
-	 * This function is run when the robot is first started up and should be
-	 * used for any initialization code.
+	 * This function is run when the robot is first started up and should be used
+	 * for any initialization code.
 	 */
 	@Override
 	public void robotInit() {
@@ -62,7 +59,6 @@ public class Robot extends IterativeRobot {
 		chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
-		SmartDashboard.putNumber("screwAxis", screwAxis);
 		SmartDashboard.putNumber("AutoSpeed", 0.7);
 		SmartDashboard.putNumber("AutoTime", 200);
 		SmartDashboard.putString("AutoVersion (for , basic)", "Basic");
@@ -71,9 +67,9 @@ public class Robot extends IterativeRobot {
 	}
 
 	/**
-	 * This function is called once each time the robot enters Disabled mode.
-	 * You can use it to reset any subsystem information you want to clear when
-	 * the robot is disabled.
+	 * This function is called once each time the robot enters Disabled mode. You
+	 * can use it to reset any subsystem information you want to clear when the
+	 * robot is disabled.
 	 */
 	@Override
 	public void disabledInit() {
@@ -87,55 +83,55 @@ public class Robot extends IterativeRobot {
 
 	/**
 	 * This autonomous (along with the chooser code above) shows how to select
-	 * between different autonomous modes using the dashboard. The sendable
-	 * chooser code works with the Java SmartDashboard. If you prefer the
-	 * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-	 * getString code to get the auto name from the text box below the Gyro
+	 * between different autonomous modes using the dashboard. The sendable chooser
+	 * code works with the Java SmartDashboard. If you prefer the LabVIEW Dashboard,
+	 * remove all of the chooser code and uncomment the getString code to get the
+	 * auto name from the text box below the Gyro
 	 *
 	 * You can add additional auto modes by adding additional commands to the
-	 * chooser code above (like the commented example) or additional comparisons
-	 * to the switch structure below with additional strings & commands.
+	 * chooser code above (like the commented example) or additional comparisons to
+	 * the switch structure below with additional strings & commands.
 	 */
 	@Override
-	public void autonomousInit() {		
-//		autonomousCommand = chooser.getSelected();
-//
-//		
-//		  String autoSelected = SmartDashboard.getString("Auto Selector", "Default"); 
-//		  switch(autoSelected) { 
-//		  case "My Auto": 
-//			  autonomousCommand = new ForwardAuto(); 
-//			  break; 
-//		  case "Default Auto": 
-//			  default:
-//		  autonomousCommand = new ExampleCommand();
-//		  break; 
-//		  }
-//		 
-//
-//		// schedule the autonomous command (example)
-//		if (autonomousCommand != null)
-//			autonomousCommand.start();
+	public void autonomousInit() {
+		// autonomousCommand = chooser.getSelected();
+		//
+		//
+		// String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
+		// switch(autoSelected) {
+		// case "My Auto":
+		// autonomousCommand = new ForwardAuto();
+		// break;
+		// case "Default Auto":
+		// default:
+		// autonomousCommand = new ExampleCommand();
+		// break;
+		// }
+		//
+		//
+		// // schedule the autonomous command (example)
+		// if (autonomousCommand != null)
+		// autonomousCommand.start();
 	}
 
-	/**          
+	/**
 	 * This function is called periodically during autonomous
 	 */
 	@Override
 	public void autonomousPeriodic() {
-//		String gameData;
-//		gameData = DriverStation.getInstance().getGameSpecificMessage();
-//		if(gameData.charAt(0) == 'L')
-//		{
-//			//Put left auto code here
-//		} else {
-//			//Put right auto code here
-//		}
-//		Scheduler.getInstance().run();
-//		
+		// String gameData;
+		// gameData = DriverStation.getInstance().getGameSpecificMessage();
+		// if(gameData.charAt(0) == 'L')
+		// {
+		// //Put left auto code here
+		// } else {
+		// //Put right auto code here
+		// }
+		// Scheduler.getInstance().run();
+		//
 		aut.auto(SmartDashboard.getNumber("AutoSpeed", 0.7), true);
 	}
-	
+
 	@Override
 	public void teleopInit() {
 		// This makes sure that the autonomous stops running when
@@ -146,7 +142,7 @@ public class Robot extends IterativeRobot {
 			autonomousCommand.cancel();
 		aut.auto(0.0, false);
 		compressor.setClosedLoopControl(true);
-	} 
+	}
 
 	/**
 	 * This function is called periodically during operator control
@@ -154,73 +150,59 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		
-<<<<<<< HEAD
+
 		SmartDashboard.putNumber("SonarMM", sonar.getDistancemm());
-=======
-		
-		
-		
+
 		sonar.getDistancemm();
-		
-		//double exp = 1.0;
-		
->>>>>>> 7d9a30ef8ba92081dac8772265f883aab8e081af
 
 		double r = -driveStick.getTwist();
 		double y = -driveStick.getY();
-		double x =  driveStick.getX();
-    	
-    	SmartDashboard.putNumber("Y Input", y);
-    	SmartDashboard.putNumber("R Input", r);
-    	SmartDashboard.putNumber("x Input", x);
-    	
-    	mainDrive.drive(x, y, r);
-    	
-    	//double s = xBox.getRawAxis(SmartDashboard.getNumber("screwAxis", 1));
-    	double s = -xBox.getRawAxis(1);
-    	
-    	double w = xBox.getRawAxis(5);
-    	
-    	winch.coil((Math.abs(w)>.2)?w:0);
-    	
-    	screwDrive.screw((Math.abs(s)>.1)?s:0);
-    	
-    	if (xBox.getRawButton(1)) {
-    		climPneu.set(true);
-    	} else {
-    		climPneu.set( false);
-    	}
-    	
-    	SmartDashboard.putNumber("Double Solenoid KForward", 0);
-    	SmartDashboard.putNumber("Double Solenoid KReverse", 0);
-    	SmartDashboard.putNumber("Double Solenoid KOff", 0);
-    	
-    	if (xBox.getRawAxis(2) > .5) {
-    		SmartDashboard.putNumber("Double Solenoid KForward", 1);
-    		grabPneu.set(DoubleSolenoid.Value.kForward);
-    		//System.out.println("Double SOlenoid KForward");
-    	} else if (xBox.getRawAxis(3) > .5) {
-    		SmartDashboard.putNumber("Double Solenoid KReverse", 1);
-    		grabPneu.set(DoubleSolenoid.Value.kReverse);
-    		//System.out.println("Double SOlenoid KReverse");
-    	} else {
-    		SmartDashboard.putNumber("Double Solenoid KOff", 1);
-    		grabPneu.set(DoubleSolenoid.Value.kOff);
-    		//System.out.println("Double SOlenoid KOff");
-    	}
-    	
-    	
-    	
-    	
-    	
+		double x = driveStick.getX();
+
+		SmartDashboard.putNumber("Y Input", y);
+		SmartDashboard.putNumber("R Input", r);
+		SmartDashboard.putNumber("x Input", x);
+
+		mainDrive.drive(x, y, r);
+
+		double s = -xBox.getRawAxis(1);
+
+		double w = xBox.getRawAxis(5);
+
+		winch.coil((Math.abs(w) > .2) ? w : 0);
+
+		screwDrive.screw((Math.abs(s) > .1) ? s : 0);
+
+		if (xBox.getRawButton(1)) {
+			climPneu.set(true);
+		} else {
+			climPneu.set(false);
+		}
+
+		SmartDashboard.putNumber("Double Solenoid KForward", 0);
+		SmartDashboard.putNumber("Double Solenoid KReverse", 0);
+		SmartDashboard.putNumber("Double Solenoid KOff", 0);
+
+		if (xBox.getRawAxis(2) > .5) {
+			SmartDashboard.putNumber("Double Solenoid KForward", 1);
+			grabPneu.set(DoubleSolenoid.Value.kForward);
+			// System.out.println("Double SOlenoid KForward");
+		} else if (xBox.getRawAxis(3) > .5) {
+			SmartDashboard.putNumber("Double Solenoid KReverse", 1);
+			grabPneu.set(DoubleSolenoid.Value.kReverse);
+			// System.out.println("Double SOlenoid KReverse");
+		} else {
+			SmartDashboard.putNumber("Double Solenoid KOff", 1);
+			grabPneu.set(DoubleSolenoid.Value.kOff);
+			// System.out.println("Double SOlenoid KOff");
+		}
+
 	}
 
-	
 	/**
 	 * This function is called periodically during test mode
 	 */
 	@Override
 	public void testPeriodic() {
-	} 
+	}
 }
