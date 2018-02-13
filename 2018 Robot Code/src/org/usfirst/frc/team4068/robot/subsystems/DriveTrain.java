@@ -6,16 +6,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class DriveTrain {
-	
 	DifferentialDrive drive = new DifferentialDrive(
 		new SpeedControllerGroup(new Talon(3), new Talon(4)),
 		new SpeedControllerGroup(new Talon(1), new Talon(2))
 	);
-
-	/*Talon LeftFront = new Talon(3);
-	Talon LeftBack = new Talon(4);
-	Talon RightFront = new Talon(1);
-	Talon RightBack = new Talon(2);*/
 	
 	double RFM = -1;
 	double RBM = 1;
@@ -25,6 +19,8 @@ public class DriveTrain {
 	double inputCurve = 5;
 	
 	double deadzone = 0.1;
+	
+	double maxTurnPower = 0.5;
 	
 	public DriveTrain(){
 		drive.setDeadband(0.0);
@@ -36,6 +32,7 @@ public class DriveTrain {
 		
 		SmartDashboard.putNumber("Input Curve", inputCurve);
 		SmartDashboard.putNumber("Deadzone", deadzone);
+		SmartDashboard.putNumber("Max Turning Power", maxTurnPower);
 	}
 	
 	
@@ -48,11 +45,14 @@ public class DriveTrain {
 		
 		inputCurve = SmartDashboard.getNumber("Input Curve", inputCurve);
 		deadzone = SmartDashboard.getNumber("Deadzone", deadzone);
+		maxTurnPower = SmartDashboard.getNumber("Max Turning Power", maxTurnPower);
 		
 		// Apply deadzone
 		x = (Math.abs(x) < deadzone) ? 0 : x;
 		y = (Math.abs(y) < deadzone) ? 0 : y;
 		r = (Math.abs(r) < deadzone) ? 0 : r;
+		
+		r *= maxTurnPower;
 		
 		double lfpower = y + r;
 		double rfpower = -y + r;
