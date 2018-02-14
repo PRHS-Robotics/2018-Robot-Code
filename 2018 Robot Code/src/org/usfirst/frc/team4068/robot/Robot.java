@@ -22,6 +22,7 @@ import org.usfirst.frc.team4068.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team4068.robot.subsystems.Winch;
 import org.usfirst.frc.team4068.robot.subsystems.AutoClass;
 
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -63,6 +64,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("AutoTime", 200);
 		SmartDashboard.putString("AutoVersion (for , basic)", "Basic");
 		SmartDashboard.putNumber("SonarMM", sonar.getDistancemm());
+		SmartDashboard.putNumber("StopDist", 1000);
 		aut.auto(0.0, false);
 	}
 
@@ -149,12 +151,28 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+		
+		if (xBox.getRawButton(2)) {
+		if (sonar.getDistancemm() < 2743.2) {
+			mainDrive.drive(0, -.5, 0);
+		} else if (sonar.getDistancemm() > 3352.8) {
+			mainDrive.drive(0, .5, 0);
+		}
+		}
+		
+		
+		
+		
+		
 		Scheduler.getInstance().run();
 
 		SmartDashboard.putNumber("SonarMM", sonar.getDistancemm());
+		SmartDashboard.putNumber("SonarMM2", sonar.getDistancemm2());
 
 		sonar.getDistancemm();
-
+		sonar.getDistancemm2();
+		
+		
 		double r = -driveStick.getTwist();
 		double y = -driveStick.getY();
 		double x = driveStick.getX();
@@ -173,12 +191,16 @@ public class Robot extends IterativeRobot {
 
 		screwDrive.screw((Math.abs(s) > .1) ? s : 0);
 
+		
+		
 		if (xBox.getRawButton(1)) {
 			climPneu.set(true);
 		} else {
 			climPneu.set(false);
 		}
 
+		
+		
 		SmartDashboard.putNumber("Double Solenoid KForward", 0);
 		SmartDashboard.putNumber("Double Solenoid KReverse", 0);
 		SmartDashboard.putNumber("Double Solenoid KOff", 0);
