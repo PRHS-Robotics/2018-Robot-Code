@@ -1,4 +1,4 @@
-
+ 
 package org.usfirst.frc.team4068.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+
 
 import org.usfirst.frc.team4068.robot.subsystems.ClimberExtension;
 import org.usfirst.frc.team4068.robot.subsystems.Clamp;
@@ -65,6 +66,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putString("AutoVersion (for , basic)", "Basic");
 		SmartDashboard.putNumber("SonarMM", sonar.getDistancemm());
 		SmartDashboard.putNumber("StopDist", 1000);
+		SmartDashboard.putNumber("Auto Turn Time", 25);
 		aut.auto(0.0, false);
 	}
 
