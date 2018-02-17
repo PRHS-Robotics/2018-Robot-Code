@@ -1,22 +1,35 @@
 package org.usfirst.frc.team4068.robot.subsystems;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Solenoid;
 
 public class AutoClass {
 	DriveTrain mainDrive;
+	Clamp clamp;
 	Sonar sonar;
-	int t;
+	int t = 0;
+	int clampFall = 0;
 	int stopt1 = 0;
 	int turntime = 0;
+	DoubleSolenoid grabPneu;// = new DoubleSolenoid(2, 3);
 	//int autoTurnTime;
 	double a;
 	
-	public AutoClass(DriveTrain driveTrain, Sonar sonar) {
+	public AutoClass(DriveTrain driveTrain, Sonar sonar, Clamp clamp, DoubleSolenoid grabPneu) {
 		this.mainDrive = driveTrain;
 		this.sonar = sonar;
+		this.clamp = clamp;
+		this.grabPneu = grabPneu;
 	}
 	
-	public void auto(double power, boolean run) {
+	public void auto(double power, boolean run, int LorR) {
+		
+		// 1 == Left
+		// 2 == Right
+		
+		// LorR /\/\
+		
 		if (run == true) {
 			
 			if (SmartDashboard.getBoolean("Move forward and Stop (No Switch)", false)) 
@@ -27,6 +40,23 @@ public class AutoClass {
 						mainDrive.drive(0, power, 0.0);
 					}
 				t++;
+				}
+			} else if (SmartDashboard.getBoolean("Move forward and deposit cube (Left)", false)) {
+				if (LorR == 1) {
+					if (sonar.getDistancemm() < SmartDashboard.getNumber("StopDist", 800)) {
+						mainDrive.drive(0, 0.0, 0.0);
+						clampFall++;
+						if (clampFall < 30) {
+							clamp.screw(-0.5);
+						} else {
+							grabPneu.set(DoubleSolenoid.Value.kReverse);
+						}
+						
+					}else {
+						mainDrive.drive(0, power, 0.0);
+					}
+				} else if (LorR == 2) {
+					
 				}
 			}
 			

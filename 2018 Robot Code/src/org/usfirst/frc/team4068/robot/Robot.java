@@ -53,7 +53,7 @@ public class Robot extends IterativeRobot {
 	Solenoid climPneu = new Solenoid(1);
 	DoubleSolenoid grabPneu = new DoubleSolenoid(2, 3);
 	Sonar sonar = new Sonar();
-	AutoClass aut = new AutoClass(mainDrive, sonar);
+	AutoClass aut = new AutoClass(mainDrive, sonar, screwDrive, grabPneu);
 
 	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 	public static OI oi;
@@ -81,7 +81,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("StopDist", 1000);
 		SmartDashboard.putNumber("Auto Turn Time", 25);
 		SmartDashboard.putBoolean("Move forward and Stop (No Switch)", false);
-		aut.auto(0.0, false);
+		aut.auto(0.0, false, 3);
 	}
 
 	/**
@@ -141,13 +141,13 @@ public class Robot extends IterativeRobot {
 		 gameData = DriverStation.getInstance().getGameSpecificMessage();
 		 if(gameData.charAt(0) == 'L')
 		 {
-		 //Put left auto code here
+			 aut.auto(SmartDashboard.getNumber("AutoSpeed", 0.7), true, 1);
 		 } else {
-		 //Put right auto code here
+			 aut.auto(SmartDashboard.getNumber("AutoSpeed", 0.7), true, 2); 
 		 }
 		 Scheduler.getInstance().run();
 		
-		aut.auto(SmartDashboard.getNumber("AutoSpeed", 0.7), true);
+		//aut.auto(SmartDashboard.getNumber("AutoSpeed", 0.7), true);
 	}
 
 	@Override
@@ -158,7 +158,7 @@ public class Robot extends IterativeRobot {
 		// this line or comment it out.
 		if (autonomousCommand != null)
 			autonomousCommand.cancel();
-		aut.auto(0.0, false);
+		aut.auto(0.0, false, 3);
 		compressor.setClosedLoopControl(true);
 	}
 
@@ -168,13 +168,13 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		
-		if (xBox.getRawButton(2)) {
-		if (sonar.getDistancemm() < 2743.2) {
-			mainDrive.drive(0, -.5, 0);
-		} else if (sonar.getDistancemm() > 3352.8) {
-			mainDrive.drive(0, .5, 0);
-		}
-		}
+//		if (xBox.getRawButton(2)) {
+//		if (sonar.getDistancemm() < 2743.2) {
+//			mainDrive.drive(0, -.5, 0);
+//		} else if (sonar.getDistancemm() > 3352.8) {
+//			mainDrive.drive(0, .5, 0);
+//		}
+//		}
 		
 		
 		
