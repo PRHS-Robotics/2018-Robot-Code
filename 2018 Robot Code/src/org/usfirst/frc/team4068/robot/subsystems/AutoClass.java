@@ -12,6 +12,7 @@ public class AutoClass {
 	int clampFall = 0;
 	int stopt1 = 0;
 	int turntime = 0;
+	int z = 0;
 	DoubleSolenoid grabPneu;// = new DoubleSolenoid(2, 3);
 	//int autoTurnTime;
 	double a;
@@ -60,6 +61,10 @@ public class AutoClass {
 					}
 				} else if (LorR == 2) {
 					
+				}
+			} else {
+				if (z < SmartDashboard.getNumber("AutoTime", 200)) {
+					mainDrive.drive(0.0, power, 0.0);
 				}
 			}
 			
