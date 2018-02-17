@@ -137,6 +137,8 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
+		sonar.getDistancemm();
+		sonar.getDistancemm2();
 		 String gameData;
 		 gameData = DriverStation.getInstance().getGameSpecificMessage();
 		 if(gameData.charAt(0) == 'L')

@@ -37,7 +37,10 @@ public class AutoClass {
 				if (sonar.getDistancemm() > SmartDashboard.getNumber("StopDist", 800)) {
 					a = SmartDashboard.getNumber("AutoTime", 200);
 					if (a > t) {
-						mainDrive.drive(0, power, 0.0);
+						mainDrive.drive(0.0, power, 0.0);
+					}
+					else {
+						mainDrive.drive(0.0, 0.0, 0.0);
 					}
 				t++;
 				}
@@ -53,7 +56,7 @@ public class AutoClass {
 						}
 						
 					}else {
-						mainDrive.drive(0, power, 0.0);
+						mainDrive.drive(0.0, power, 0.0);
 					}
 				} else if (LorR == 2) {
 					

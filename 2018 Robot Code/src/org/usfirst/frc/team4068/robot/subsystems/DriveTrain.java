@@ -33,6 +33,8 @@ public class DriveTrain {
 		SmartDashboard.putNumber("Input Curve", inputCurve);
 		SmartDashboard.putNumber("Deadzone", deadzone);
 		SmartDashboard.putNumber("Max Turning Power", maxTurnPower);
+		
+		drive.setSafetyEnabled(false);
 	}
 	
 	
