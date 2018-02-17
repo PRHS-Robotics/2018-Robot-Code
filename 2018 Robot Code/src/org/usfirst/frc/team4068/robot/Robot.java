@@ -81,6 +81,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("StopDist", 1000);
 		SmartDashboard.putNumber("Auto Turn Time", 25);
 		SmartDashboard.putBoolean("Move forward and Stop (No Switch)", false);
+		SmartDashboard.putBoolean("Move forward and deposit cube (Left)", false);
 		aut.auto(0.0, false, 3);
 	}
 
@@ -130,6 +131,10 @@ public class Robot extends IterativeRobot {
 		// // schedule the autonomous command (example)
 		// if (autonomousCommand != null)
 		// autonomousCommand.start();
+		sonar.getDistancemm();
+		sonar.getDistancemm2();
+		grabPneu.set(DoubleSolenoid.Value.kReverse);
+		aut.init();
 	}
 
 	/**
@@ -137,6 +142,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
+		//grabPneu.set(DoubleSolenoid.Value.kReverse);
 		sonar.getDistancemm();
 		sonar.getDistancemm2();
 		 String gameData;
@@ -170,13 +176,10 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		
-//		if (xBox.getRawButton(2)) {
-//		if (sonar.getDistancemm() < 2743.2) {
-//			mainDrive.drive(0, -.5, 0);
-//		} else if (sonar.getDistancemm() > 3352.8) {
-//			mainDrive.drive(0, .5, 0);
-//		}
-//		}
+		if (xBox.getRawButton(2)) {
+		
+			aut.auto(SmartDashboard.getNumber("AutoSpeed", 0.7), true, 1);
+		}
 		
 		
 		
