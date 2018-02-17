@@ -12,6 +12,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DriverStation;
+//import org.opencv.imgproc.Imgproc;
+import edu.wpi.cscore.UsbCamera;
+//import edu.wpi.first.wpilibj.vision.VisionRunner;
+//import edu.wpi.first.wpilibj.vision.VisionThread;
 
 
 import org.usfirst.frc.team4068.robot.subsystems.ClimberExtension;
@@ -22,6 +27,7 @@ import org.usfirst.frc.team4068.robot.subsystems.DriveTrain;
 import org.usfirst.frc.team4068.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team4068.robot.subsystems.Winch;
 import org.usfirst.frc.team4068.robot.subsystems.AutoClass;
+import edu.wpi.first.wpilibj.CameraServer;
 
 
 /**
@@ -32,6 +38,10 @@ import org.usfirst.frc.team4068.robot.subsystems.AutoClass;
  * directory.
  */
 public class Robot extends IterativeRobot {
+	
+	
+	private static final int IMG_WIDTH = 640;
+	private static final int IMG_HEIGHT = 480;
 
 	Joystick driveStick = new Joystick(1);
 	Joystick xBox = new Joystick(2);
@@ -57,9 +67,12 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
+		SmartDashboard.putBoolean("Load Auto From File", true);
 		oi = new OI();
 		chooser.addDefault("Default Auto", new ExampleCommand());
 		// chooser.addObject("My Auto", new MyAutoCommand());
+		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+		camera.setResolution(640, 480);
 		SmartDashboard.putData("Auto mode", chooser);
 		SmartDashboard.putNumber("AutoSpeed", 0.7);
 		SmartDashboard.putNumber("AutoTime", 200);
@@ -123,16 +136,16 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-		// String gameData;
-		// gameData = DriverStation.getInstance().getGameSpecificMessage();
-		// if(gameData.charAt(0) == 'L')
-		// {
-		// //Put left auto code here
-		// } else {
-		// //Put right auto code here
-		// }
-		// Scheduler.getInstance().run();
-		//
+		 String gameData;
+		 gameData = DriverStation.getInstance().getGameSpecificMessage();
+		 if(gameData.charAt(0) == 'L')
+		 {
+		 //Put left auto code here
+		 } else {
+		 //Put right auto code here
+		 }
+		 Scheduler.getInstance().run();
+		
 		aut.auto(SmartDashboard.getNumber("AutoSpeed", 0.7), true);
 	}
 
