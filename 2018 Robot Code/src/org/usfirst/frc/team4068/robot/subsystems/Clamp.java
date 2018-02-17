@@ -26,17 +26,17 @@ public class Clamp {
 		
 		
 		if (screwPower < 0){
-			screwPower = screwPower * .25;
+			screwPower = screwPower * .35;
 		}
 		
 		SmartDashboard.putNumber("switchPower", screwPower);
 		
-		
-		if (limitSwitch.get() && screwPower < 0) {
-		//screwD.set(screwPower);
-		} else {
 		screwD.set(screwPower);
-		}
+//		if (limitSwitch.get() && screwPower < 0) {
+//		screwD.set(screwPower);
+//		} else {
+//		screwD.set(screwPower);
+//		}
 	
 	}
 	

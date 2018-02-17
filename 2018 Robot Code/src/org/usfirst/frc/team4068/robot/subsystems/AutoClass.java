@@ -12,6 +12,7 @@ public class AutoClass {
 	int clampFall = 0;
 	int stopt1 = 0;
 	int turntime = 0;
+	int z = 0;
 	DoubleSolenoid grabPneu;// = new DoubleSolenoid(2, 3);
 	//int autoTurnTime;
 	double a;
@@ -37,7 +38,10 @@ public class AutoClass {
 				if (sonar.getDistancemm() > SmartDashboard.getNumber("StopDist", 800)) {
 					a = SmartDashboard.getNumber("AutoTime", 200);
 					if (a > t) {
-						mainDrive.drive(0, power, 0.0);
+						mainDrive.drive(0.0, power, 0.0);
+					}
+					else {
+						mainDrive.drive(0.0, 0.0, 0.0);
 					}
 				t++;
 				}
@@ -55,14 +59,13 @@ public class AutoClass {
 						}
 						
 					}else {
-						mainDrive.drive(0, power, 0.0);
+						mainDrive.drive(0.0, power, 0.0);
 					}
 				}//end LorR == 1 
 			}
 			
 			else if (SmartDashboard.getBoolean("Move forward and deposit cube (right)", false)) {
 				if (LorR == 2) {
-					
 					//left
 					//turn left 90D
 					mainDrive.drive(0, power, -1.0);//turn left
@@ -73,24 +76,25 @@ public class AutoClass {
 					//timer here
 					if (sonar.getDistancemm() < SmartDashboard.getNumber("StopDist", 800)) {
 						mainDrive.drive(0.0, 0.0, 0.0);
-						clampFall++;
+						++clampFall;
 						if (clampFall < 30) {
 							clamp.screw(-0.5);
 						} else {
 							grabPneu.set(DoubleSolenoid.Value.kReverse);
 						}
-						
-					}else {
-						
+					} else {
 							mainDrive.drive(0,power,0.0);
-						
 					}
-				}//end LorR == 1 
+				}
+			} else {
+				if (z < SmartDashboard.getNumber("AutoTime", 200)) {
+					mainDrive.drive(0.0, power, 0.0);
+				}
 			}
 			
-			//maybe? turn 45D then forword then s
+			//maybe? turn 45D then forward then s
 			
-			//UNTESTED move forward, stop, turn, monve forward
+			//UNTESTED move forward, stop, turn, move forward
 //			if (sonar.getDistancemm() < SmartDashboard.getNumber("StopDist", 1000)) {
 //				mainDrive.drive(0.0, 0.0, 0.0);
 //				stopt1++;
