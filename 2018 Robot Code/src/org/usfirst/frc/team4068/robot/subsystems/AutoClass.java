@@ -24,7 +24,17 @@ public class AutoClass {
 		this.grabPneu = grabPneu;
 	}
 	
+	public void init() {
+		t = 0;
+		clampFall = 0;
+		stopt1 = 0;
+		turntime = 0;
+		z = 0;
+	}
+	
 	public void auto(double power, boolean run, int LorR) {
+		
+		sonar.getDistancemm();
 		
 		// 1 == Left
 		// 2 == Right
@@ -33,29 +43,29 @@ public class AutoClass {
 		
 		if (run == true) {
 			
-			if (SmartDashboard.getBoolean("Move forward and Stop (No Switch)", false)) 
+			if (SmartDashboard.getBoolean("Move forward and Stop (No Switch)", false) == true) 
 			{
-				if (sonar.getDistancemm() > SmartDashboard.getNumber("StopDist", 800)) {
+				//if (sonar.getDistancemm() > SmartDashboard.getNumber("StopDist", 600)) {
 					a = SmartDashboard.getNumber("AutoTime", 200);
-					if (a > t) {
+					SmartDashboard.putNumber("AutoCounter", t);
+					if (t < 150) {
 						mainDrive.drive(0.0, power, 0.0);
 					}
 					else {
+						
 						mainDrive.drive(0.0, 0.0, 0.0);
 					}
 				t++;
-				}
-			} else if (SmartDashboard.getBoolean("Move forward and deposit cube (Left)", false)) {
+				//}
+			} else if (SmartDashboard.getBoolean("Move forward and deposit cube (Left)", false) == true) {
 				if (LorR == 1) {
-					
-					//left
-					if (sonar.getDistancemm() < SmartDashboard.getNumber("StopDist", 800)) {
-						mainDrive.drive(0.0, 0.0, 0.0);
+					if (sonar.getDistancemm() < SmartDashboard.getNumber("StopDist", 550)) {
+						mainDrive.drive(0, 0.0, 0.0);
 						clampFall++;
 						if (clampFall < 30) {
 							clamp.screw(-0.5);
 						} else {
-							grabPneu.set(DoubleSolenoid.Value.kReverse);
+							grabPneu.set(DoubleSolenoid.Value.kForward);
 						}
 						
 					}else {
@@ -87,9 +97,10 @@ public class AutoClass {
 					}
 				}
 			} else {
-				if (z < SmartDashboard.getNumber("AutoTime", 200)) {
-					mainDrive.drive(0.0, power, 0.0);
-				}
+				mainDrive.drive(0.0, 0.0, 0.0);
+//				if (z < SmartDashboard.getNumber("AutoTime", 200)) {
+//					mainDrive.drive(0.0, power, 0.0);
+//				}
 			}
 			
 			//maybe? turn 45D then forward then s
