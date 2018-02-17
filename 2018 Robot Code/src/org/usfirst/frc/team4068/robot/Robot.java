@@ -80,6 +80,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("SonarMM", sonar.getDistancemm());
 		SmartDashboard.putNumber("StopDist", 1000);
 		SmartDashboard.putNumber("Auto Turn Time", 25);
+		SmartDashboard.putBoolean("Move forward and Stop (No Switch)", false);
 		aut.auto(0.0, false);
 	}
 

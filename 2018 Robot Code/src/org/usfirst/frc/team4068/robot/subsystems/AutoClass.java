@@ -19,6 +19,17 @@ public class AutoClass {
 	public void auto(double power, boolean run) {
 		if (run == true) {
 			
+			if (SmartDashboard.getBoolean("Move forward and Stop (No Switch)", false)) 
+			{
+				if (sonar.getDistancemm() > SmartDashboard.getNumber("StopDist", 800)) {
+					a = SmartDashboard.getNumber("AutoTime", 200);
+					if (a > t) {
+						mainDrive.drive(0, power, 0.0);
+					}
+				t++;
+				}
+			}
+			
 			//UNTESTED move forward, stop, turn, monve forward
 //			if (sonar.getDistancemm() < SmartDashboard.getNumber("StopDist", 1000)) {
 //				mainDrive.drive(0.0, 0.0, 0.0);
@@ -34,12 +45,6 @@ public class AutoClass {
 			
 			SmartDashboard.putNumber("stopt", stopt1);
 		
-		}/*
-		a = SmartDashboard.getNumber("AutoTime", 200);
-		if (a > t) {
-			mainDrive.drive(0, power, 0.0);
 		}
-		t++;
-		*/
 	}
 }
