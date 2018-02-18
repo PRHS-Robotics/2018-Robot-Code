@@ -1,6 +1,9 @@
 package org.usfirst.frc.team4068.robot.subsystems;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import java.io.ByteArrayInputStream;
+
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
 
@@ -17,11 +20,14 @@ public class AutoClass {
 	//int autoTurnTime;
 	double a;
 	
-	public AutoClass(DriveTrain driveTrain, Sonar sonar, Clamp clamp, DoubleSolenoid grabPneu) {
+	Recorder recorder;
+	
+	public AutoClass(DriveTrain driveTrain, Sonar sonar, Clamp clamp, DoubleSolenoid grabPneu, Recorder recorder) {
 		this.mainDrive = driveTrain;
 		this.sonar = sonar;
 		this.clamp = clamp;
 		this.grabPneu = grabPneu;
+		this.recorder = recorder;
 	}
 	
 	public void init() {
