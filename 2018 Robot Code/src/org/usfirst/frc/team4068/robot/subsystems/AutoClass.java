@@ -48,22 +48,31 @@ public class AutoClass {
 		// LorR /\/\
 		
 		if (run == true) {
-			
-			if (SmartDashboard.getBoolean("Move forward and Stop (No Switch)", false) == true) 
+			if (edu.wpi.first.wpilibj.smartdashboard.SmartDashboard.getBoolean("Move forward and Stop (No Switch)", true)) 
 			{
-				//if (sonar.getDistancemm() > SmartDashboard.getNumber("StopDist", 600)) {
-					a = SmartDashboard.getNumber("AutoTime", 200);
-					SmartDashboard.putNumber("AutoCounter", t);
-					if (t < 150) {
+				//if (sonar.getDistancemm() > SmartDashboard.getNumber("StopDist", 800)) {
+					//a = SmartDashboard.getNumber("AutoTime", 100);
+					a = 90;
+				if (a > t) {
 						mainDrive.drive(0.0, power, 0.0);
 					}
-					else {
-						
+					else if ((a + 50) > t) {
+						mainDrive.drive(0.0, 0.0, 1);
+					} else if ((a + 100) > t){
+						mainDrive.drive(0.0, .6, 0.0);
+					} else if ((a + 120) > t) {
+						clamp.screw(-0.5);
+					} else if ((a + 150) > t) {
+						mainDrive.drive(0.0, 0.0, 0.0);
+						grabPneu.set(DoubleSolenoid.Value.kReverse);
+					} else if ((a + 170) > t) {
+						grabPneu.set(DoubleSolenoid.Value.kForward);
+					} else {
 						mainDrive.drive(0.0, 0.0, 0.0);
 					}
 				t++;
 				//}
-			} else if (SmartDashboard.getBoolean("Move forward and deposit cube (Left)", false) == true) {
+			} else if (SmartDashboard.getBoolean("Move forward and deposit cube (Left)", false)) {
 				if (LorR == 1) {
 					if (sonar.getDistancemm() < SmartDashboard.getNumber("StopDist", 550)) {
 						mainDrive.drive(0, 0.0, 0.0);
@@ -79,35 +88,7 @@ public class AutoClass {
 					}
 				}//end LorR == 1 
 			}
-			
-			else if (SmartDashboard.getBoolean("Move forward and deposit cube (right)", false)) {
-				if (LorR == 2) {
-					//left
-					//turn left 90D
-					mainDrive.drive(0, power, -1.0);//turn left
-					//timer here
-					mainDrive.drive(0, power, 0.0);
-					//timer here
-					mainDrive.drive(0, power, 1.0);
-					//timer here
-					if (sonar.getDistancemm() < SmartDashboard.getNumber("StopDist", 800)) {
-						mainDrive.drive(0.0, 0.0, 0.0);
-						++clampFall;
-						if (clampFall < 30) {
-							clamp.screw(-0.5);
-						} else {
-							grabPneu.set(DoubleSolenoid.Value.kReverse);
-						}
-					} else {
-							mainDrive.drive(0,power,0.0);
-					}
-				}
-			} else {
-				mainDrive.drive(0.0, 0.0, 0.0);
-//				if (z < SmartDashboard.getNumber("AutoTime", 200)) {
-//					mainDrive.drive(0.0, power, 0.0);
-//				}
-			}
+
 			
 			//maybe? turn 45D then forward then s
 			

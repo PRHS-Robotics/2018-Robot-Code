@@ -91,7 +91,7 @@ public class Robot extends IterativeRobot {
 		camera.setResolution(640, 480);
 		SmartDashboard.putData("Auto mode", chooser);
 		SmartDashboard.putNumber("AutoSpeed", 0.7);
-		SmartDashboard.putNumber("AutoTime", 200);
+		SmartDashboard.putNumber("AutoTime", 150);
 		SmartDashboard.putString("AutoVersion (for , basic)", "Basic");
 		SmartDashboard.putNumber("SonarMM", sonar.getDistancemm());
 		SmartDashboard.putNumber("StopDist", 1000);
@@ -161,9 +161,6 @@ public class Robot extends IterativeRobot {
 		// autonomousCommand.start();
 		sonar.getDistancemm();
 		sonar.getDistancemm2();
-		grabPneu.set(DoubleSolenoid.Value.kReverse);
-		aut.init();
-		
 		try {
 			Path path = Paths.get("/home/lvuser/Auto1.auto");
 			byte[] data = Files.readAllBytes(path);
@@ -190,15 +187,7 @@ public class Robot extends IterativeRobot {
 		//grabPneu.set(DoubleSolenoid.Value.kReverse);
 		/*sonar.getDistancemm();
 		sonar.getDistancemm2();
-		 String gameData;
-		 gameData = DriverStation.getInstance().getGameSpecificMessage();
-		 if(gameData.charAt(0) == 'L')
-		 {
-			 aut.auto(SmartDashboard.getNumber("AutoSpeed", 0.7), true, 1);
-		 } else {
-			 aut.auto(SmartDashboard.getNumber("AutoSpeed", 0.7), true, 2); 
-		 }
-		 Scheduler.getInstance().run();*/
+		 String gameData;*/
 		
 		//aut.auto(SmartDashboard.getNumber("AutoSpeed", 0.7), true);
 	}
