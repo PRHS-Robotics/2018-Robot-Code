@@ -106,6 +106,7 @@ public class Robot extends IterativeRobot {
 					double voltage = PowerJNI.getVinVoltage();
 					synchronized (voltageLock) {
 						currentVoltage = voltage;
+						SmartDashboard.putNumber("Battery Voltage", currentVoltage);
 					}
 				}
 			}
@@ -284,6 +285,7 @@ public class Robot extends IterativeRobot {
 		if (state.getButton(4)) {
 			recorder.recordInput(state);
 		}
+		
 		// TODO: Find an unused button to save the data
 		if (state.getButton(3)) {
 			try {
