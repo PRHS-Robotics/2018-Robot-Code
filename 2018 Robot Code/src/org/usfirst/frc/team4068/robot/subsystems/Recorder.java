@@ -20,8 +20,8 @@ public class Recorder {
 			}
 			byte buttons = 0;
 			for (int i = 1; i <= 8; ++i) {
-				buttons |= (input.getButton(i)) ? 1 : 0;
 				buttons <<= 1;
+				buttons |= (input.getButton(i)) ? 1 : 0;
 			}
 			inputRecorder.write(buttons);
 			inputRecorder.write(serialize(input.getVoltage()));
