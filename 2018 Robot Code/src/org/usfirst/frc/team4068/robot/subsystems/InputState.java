@@ -21,10 +21,10 @@ public class InputState {
 		y = driveStick.getY();
 		r = driveStick.getTwist();
 		for (int i = 1; i <= 5; ++i) {
-			auxAxes[i - 1] = auxStick.getRawAxis(i);
+			setXboxAxis(i, auxStick.getRawAxis(i));
 		}
 		for (int i = 1; i <= 8; ++i) {
-			buttons[i - 1] = auxStick.getRawButton(i);
+			setButton(i, auxStick.getRawButton(i));
 		}
 	}
 	
