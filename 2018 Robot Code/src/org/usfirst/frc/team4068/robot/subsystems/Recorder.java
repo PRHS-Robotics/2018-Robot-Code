@@ -8,7 +8,16 @@ import java.nio.ByteBuffer;
 import edu.wpi.first.wpilibj.Joystick;
 
 public class Recorder {
-	private ByteArrayOutputStream inputRecorder;
+	private ByteArrayOutputStream inputRecorder = new ByteArrayOutputStream();
+	
+	public int getFrameSize() {
+		return 	+8
+				+8
+				+8
+				+8*5
+				+1
+				+8;
+	}
 	
 	public void recordInput(InputState input) {
 		try {
@@ -60,6 +69,10 @@ public class Recorder {
 	
 	public byte[] getBytes() {
 		return inputRecorder.toByteArray();
+	}
+	
+	public int getSize() {
+		return inputRecorder.size();
 	}
 	
 	private static byte[] serialize(double x) {
