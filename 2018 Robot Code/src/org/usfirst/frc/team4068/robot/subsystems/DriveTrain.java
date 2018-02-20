@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveTrain {
 	DifferentialDrive drive = new DifferentialDrive(
 		new SpeedControllerGroup(new Talon(3), new Talon(4)),
-		new SpeedControllerGroup(new Talon(1), new Talon(2))
+		new SpeedControllerGroup(new Talon(2), new Talon(1))
 	);
 	
 	double RFM = -1;

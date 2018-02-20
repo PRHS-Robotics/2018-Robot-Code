@@ -19,8 +19,6 @@ import edu.wpi.cscore.UsbCamera;
 //import edu.wpi.first.wpilibj.vision.VisionRunner;
 //import edu.wpi.first.wpilibj.vision.VisionThread;
 
-
-import org.usfirst.frc.team4068.robot.subsystems.ClimberExtension;
 import org.usfirst.frc.team4068.robot.subsystems.Clamp;
 import org.usfirst.frc.team4068.robot.subsystems.Sonar;
 
@@ -59,7 +57,6 @@ public class Robot extends IterativeRobot {
 	Joystick driveStick = new Joystick(1);
 	Joystick xBox = new Joystick(2);
 	DriveTrain mainDrive = new DriveTrain();
-	ClimberExtension climb = new ClimberExtension();
 	Clamp screwDrive = new Clamp();
 	Winch winch = new Winch();
 	Compressor compressor = new Compressor();
@@ -68,6 +65,20 @@ public class Robot extends IterativeRobot {
 	Sonar sonar = new Sonar();
 	Recorder recorder = new Recorder();
 	AutoClass aut = new AutoClass(mainDrive, sonar, screwDrive, grabPneu, recorder);
+	String[] autoModes = { 
+			"DepositCubeFromLeftToL",
+			"DepositCubeFromCenterToL",
+			"DepositCubeFromRightToL",
+			"DepositCubeFromLeftToR",
+			"DepositCubeFromCenterToR",
+			"DepositCubeFromRightToR"
+	};
+	
+	String[] driverStations = {
+			"Left",
+			"Center",
+			"Right"
+	};
 	
 	private Object voltageLock = new Object();
 
@@ -89,6 +100,7 @@ public class Robot extends IterativeRobot {
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
 		camera.setResolution(640, 480);
+		camera.setFPS(40);
 		SmartDashboard.putData("Auto mode", chooser);
 		SmartDashboard.putNumber("AutoSpeed", 0.7);
 		SmartDashboard.putNumber("AutoTime", 150);
@@ -96,13 +108,12 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("SonarMM", sonar.getDistancemm());
 		SmartDashboard.putNumber("StopDist", 1000);
 		SmartDashboard.putNumber("Auto Turn Time", 25);
-		SmartDashboard.putBoolean("Move forward and Stop (No Switch)", false);
-		SmartDashboard.putBoolean("Move forward and deposit cube (Left)", false);
+		SmartDashboard.putNumber("Driver Station - 0 = Left, 1 = Center, 2 = Right", 0);
 		aut.auto(0.0, false, 3);
 		
 		new Thread() {
 			public void run() {
-				while (Robot.this.isAutonomous() && Robot.this.isEnabled()) {
+				while (true) {
 					double voltage = PowerJNI.getVinVoltage();
 					synchronized (voltageLock) {
 						currentVoltage = voltage;
@@ -139,6 +150,13 @@ public class Robot extends IterativeRobot {
 	 * chooser code above (like the commented example) or additional comparisons to
 	 * the switch structure below with additional strings & commands.
 	 */
+	
+	private String getProgramName() {
+		int stationId = (int)SmartDashboard.getNumber("Driver Station - 0 = Left, 1 = Center, 2 = Right", 0);
+		String gameData = DriverStation.getInstance().getGameSpecificMessage();
+		return "DepositCubeFrom" + driverStations[stationId] + "To" + gameData.charAt(0);
+	}
+	
 	@Override
 	public void autonomousInit() {
 		// autonomousCommand = chooser.getSelected();
@@ -159,14 +177,17 @@ public class Robot extends IterativeRobot {
 		// // schedule the autonomous command (example)
 		// if (autonomousCommand != null)
 		// autonomousCommand.start();
+		
 		sonar.getDistancemm();
 		sonar.getDistancemm2();
 		try {
-			Path path = Paths.get("/home/lvuser/Auto1.auto");
+			Path path = Paths.get("/home/lvuser/" + getProgramName() + ".auto");
 			byte[] data = Files.readAllBytes(path);
 			ByteArrayInputStream stream = new ByteArrayInputStream(data);
+
+			System.out.println("Successfully read program " + getProgramName());
 			
-			while (stream.available() >= 10) {
+			while (stream.available() >= recorder.getFrameSize()) {
 				InputState input = recorder.getNextInput(stream);
 				
 				drive(input);
@@ -270,21 +291,22 @@ public class Robot extends IterativeRobot {
 		
 		drive(state);
 		
-		// TODO: Find the Y button
 		if (state.getButton(4)) {
 			recorder.recordInput(state);
 		}
 		
-		// TODO: Find an unused button to save the data
 		if (state.getButton(3)) {
 			try {
-				File file = new File("/home/lvuser/Auto1.auto");
+				File file = new File("/home/lvuser/" + getProgramName() + ".auto");
 				if (!file.exists()) {
 					file.createNewFile();
 				}
 				FileOutputStream output = new FileOutputStream(file);
 				output.write(recorder.getBytes());
 				output.close();
+				System.out.println("Successfully saved program " + getProgramName());
+				System.out.println("Length " + recorder.getSize() + ", or " + recorder.getSize() / recorder.getFrameSize() + " input frames");
+				System.out.println("Program should run for about " + recorder.getSize() / recorder.getFrameSize() * 20.0 / 1000.0 + " seconds.");
 			}
 			catch (Exception exception) {
 				exception.printStackTrace();

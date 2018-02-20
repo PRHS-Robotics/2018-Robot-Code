@@ -26,6 +26,8 @@ public class Clamp {
 		
 		
 		if (screwPower < 0){
+			screwPower = screwPower * .3;
+		} else {
 			screwPower = screwPower * .5;
 		}
 		
