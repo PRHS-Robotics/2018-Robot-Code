@@ -26,6 +26,7 @@ public class InputState {
 		for (int i = 1; i <= 8; ++i) {
 			setButton(i, auxStick.getRawButton(i));
 		}
+		this.voltage = voltage;
 	}
 	
 	public double getX() {

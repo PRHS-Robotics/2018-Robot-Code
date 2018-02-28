@@ -102,12 +102,12 @@ public class Robot extends IterativeRobot {
 		camera.setResolution(640, 480);
 		camera.setFPS(40);
 		SmartDashboard.putData("Auto mode", chooser);
-		SmartDashboard.putNumber("AutoSpeed", 0.7);
-		SmartDashboard.putNumber("AutoTime", 150);
+		//SmartDashboard.putNumber("AutoSpeed", 0.7);
+		//SmartDashboard.putNumber("AutoTime", 150);
 		SmartDashboard.putString("AutoVersion (for , basic)", "Basic");
-		SmartDashboard.putNumber("SonarMM", sonar.getDistancemm());
-		SmartDashboard.putNumber("StopDist", 1000);
-		SmartDashboard.putNumber("Auto Turn Time", 25);
+		//SmartDashboard.putNumber("SonarMM", sonar.getDistancemm());
+		//SmartDashboard.putNumber("StopDist", 1000);
+		//SmartDashboard.putNumber("Auto Turn Time", 25);
 		SmartDashboard.putNumber("Driver Station - 0 = Left, 1 = Center, 2 = Right", 0);
 		aut.auto(0.0, false, 3);
 		
@@ -190,7 +190,7 @@ public class Robot extends IterativeRobot {
 			while (stream.available() >= recorder.getFrameSize()) {
 				InputState input = recorder.getNextInput(stream);
 				
-				drive(input);
+				drive(input); 
 				
 	    		Thread.sleep((int)Math.round(20.0 * input.getVoltage() / getVoltage()));
 			}
@@ -228,8 +228,8 @@ public class Robot extends IterativeRobot {
 	public void drive(InputState state) {
 		Scheduler.getInstance().run();
 
-		SmartDashboard.putNumber("SonarMM", sonar.getDistancemm());
-		SmartDashboard.putNumber("SonarMM2", sonar.getDistancemm2());
+		//SmartDashboard.putNumber("SonarMM", sonar.getDistancemm());
+		//SmartDashboard.putNumber("SonarMM2", sonar.getDistancemm2());
 
 		sonar.getDistancemm();
 		sonar.getDistancemm2();
@@ -239,9 +239,9 @@ public class Robot extends IterativeRobot {
 		double y = -state.getY();
 		double x = state.getX();
 
-		SmartDashboard.putNumber("Y Input", y);
-		SmartDashboard.putNumber("R Input", r);
-		SmartDashboard.putNumber("x Input", x);
+		//SmartDashboard.putNumber("Y Input", y);
+		//SmartDashboard.putNumber("R Input", r);
+		//SmartDashboard.putNumber("x Input", x);
 
 		mainDrive.drive(x, y, r);
 
@@ -263,20 +263,20 @@ public class Robot extends IterativeRobot {
 
 		
 		
-		SmartDashboard.putNumber("Double Solenoid KForward", 0);
-		SmartDashboard.putNumber("Double Solenoid KReverse", 0);
-		SmartDashboard.putNumber("Double Solenoid KOff", 0);
+		//SmartDashboard.putNumber("Double Solenoid KForward", 0);
+		//SmartDashboard.putNumber("Double Solenoid KReverse", 0);
+		//SmartDashboard.putNumber("Double Solenoid KOff", 0);
 
 		if (state.getXboxAxis(2) > .5) {
-			SmartDashboard.putNumber("Double Solenoid KForward", 1);
+			//SmartDashboard.putNumber("Double Solenoid KForward", 1);
 			grabPneu.set(DoubleSolenoid.Value.kForward);
 			// System.out.println("Double SOlenoid KForward");
 		} else if (state.getXboxAxis(3) > .5) {
-			SmartDashboard.putNumber("Double Solenoid KReverse", 1);
+			//SmartDashboard.putNumber("Double Solenoid KReverse", 1);
 			grabPneu.set(DoubleSolenoid.Value.kReverse);
 			// System.out.println("Double SOlenoid KReverse");
 		} else {
-			SmartDashboard.putNumber("Double Solenoid KOff", 1);
+			//SmartDashboard.putNumber("Double Solenoid KOff", 1);
 			grabPneu.set(DoubleSolenoid.Value.kOff);
 			// System.out.println("Double SOlenoid KOff");
 		}

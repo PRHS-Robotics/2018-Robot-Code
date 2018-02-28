@@ -20,18 +20,19 @@ public class Clamp {
 	
 	
 	public void screw(double rawPower){
-		screwM = SmartDashboard.getNumber("Screw Sensitivity", 1);
+//		screwM = SmartDashboard.getNumber("Screw Sensitivity", 1);
+//		
+//		double screwPower = Math.pow(rawPower * screwM, 3);
 		
-		double screwPower = Math.pow(rawPower * screwM, 3);
-		
+		double screwPower = rawPower;
 		
 		if (screwPower < 0){
-			screwPower = screwPower * .3;
+			screwPower = screwPower * .6;
 		} else {
-			screwPower = screwPower * .5;
+			screwPower = screwPower;
 		}
 		
-		SmartDashboard.putNumber("switchPower", screwPower);
+		SmartDashboard.putNumber("screwPower", screwPower);
 		
 		screwD.set(screwPower);
 //		if (limitSwitch.get() && screwPower < 0) {

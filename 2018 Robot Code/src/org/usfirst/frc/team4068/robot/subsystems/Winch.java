@@ -18,7 +18,7 @@ public class Winch {
 	
 	public void coil(double rightJoy)
 	{
-		rightJoy = rightJoy * .3;
+		rightJoy = rightJoy;
 		
 		double g = SmartDashboard.getNumber("WinchM", 1);
 		winchMotor.set((rightJoy * g));
