@@ -53,6 +53,8 @@ public class Robot extends IterativeRobot {
 	private static final int IMG_HEIGHT = 480;
 	
 	private static double currentVoltage;
+	
+	boolean saveDebounce = false;
 
 	Joystick driveStick = new Joystick(1);
 	Joystick xBox = new Joystick(2);
@@ -180,24 +182,7 @@ public class Robot extends IterativeRobot {
 		
 		sonar.getDistancemm();
 		sonar.getDistancemm2();
-		try {
-			Path path = Paths.get("/home/lvuser/" + getProgramName() + ".auto");
-			byte[] data = Files.readAllBytes(path);
-			ByteArrayInputStream stream = new ByteArrayInputStream(data);
-
-			System.out.println("Successfully read program " + getProgramName());
-			
-			while (stream.available() >= recorder.getFrameSize()) {
-				InputState input = recorder.getNextInput(stream);
-				
-				drive(input); 
-				
-	    		Thread.sleep((int)Math.round(20.0 * input.getVoltage() / getVoltage()));
-			}
-		}
-		catch (Exception exception) {
-			exception.printStackTrace();
-		}
+		
 	}
 
 	/**
@@ -211,6 +196,28 @@ public class Robot extends IterativeRobot {
 		 String gameData;*/
 		
 		//aut.auto(SmartDashboard.getNumber("AutoSpeed", 0.7), true);
+		if (!Robot.this.isAutonomous()) {
+			return;
+		}
+		
+		try {
+			Path path = Paths.get("/home/lvuser/" + getProgramName() + ".auto");
+			byte[] data = Files.readAllBytes(path);
+			ByteArrayInputStream stream = new ByteArrayInputStream(data);
+
+			System.out.println("Successfully read program " + getProgramName() + " of size " + stream.available());
+			
+			while (stream.available() >= recorder.getFrameSize() && Robot.this.isAutonomous()) {
+				InputState input = recorder.getNextInput(stream);
+				
+				drive(input); 
+				
+	    		Thread.sleep((int)Math.round(20.0 * input.getVoltage() / getVoltage()));
+			}
+		}
+		catch (Exception exception) {
+			exception.printStackTrace();
+		}
 	}
 
 	@Override
@@ -249,9 +256,9 @@ public class Robot extends IterativeRobot {
 
 		double w = state.getXboxAxis(5);
 
-		winch.coil((Math.abs(w) > .2) ? w : 0);
+		winch.coil((Math.abs(w) > .2) ? w : 0, getVoltage());
 
-		screwDrive.screw((Math.abs(s) > .1) ? s : 0);
+		screwDrive.screw(DriveTrain.calculateDeadzone(s, 0.1));
 
 		
 		
@@ -296,21 +303,31 @@ public class Robot extends IterativeRobot {
 		}
 		
 		if (state.getButton(3)) {
-			try {
-				File file = new File("/home/lvuser/" + getProgramName() + ".auto");
-				if (!file.exists()) {
-					file.createNewFile();
+			if (!saveDebounce) {
+				try {
+					File file = new File("/home/lvuser/" + getProgramName() + ".auto");
+					if (!file.exists()) {
+						file.createNewFile();
+					}
+					else {
+						file.delete();
+					}
+					FileOutputStream output = new FileOutputStream(file);
+					output.write(recorder.getBytes());
+					output.close();
+					System.out.println("Successfully saved program " + getProgramName());
+					System.out.println("Length " + recorder.getSize() + ", or " + recorder.getSize() / recorder.getFrameSize() + " input frames");
+					System.out.println("Program should run for about " + recorder.getSize() / recorder.getFrameSize() * 20.0 / 1000.0 + " seconds.");
+					recorder = new Recorder();
 				}
-				FileOutputStream output = new FileOutputStream(file);
-				output.write(recorder.getBytes());
-				output.close();
-				System.out.println("Successfully saved program " + getProgramName());
-				System.out.println("Length " + recorder.getSize() + ", or " + recorder.getSize() / recorder.getFrameSize() + " input frames");
-				System.out.println("Program should run for about " + recorder.getSize() / recorder.getFrameSize() * 20.0 / 1000.0 + " seconds.");
+				catch (Exception exception) {
+					exception.printStackTrace();
+				}
 			}
-			catch (Exception exception) {
-				exception.printStackTrace();
-			}
+			saveDebounce = true;
+		}
+		else {
+			saveDebounce = false;
 		}
 	}
 	

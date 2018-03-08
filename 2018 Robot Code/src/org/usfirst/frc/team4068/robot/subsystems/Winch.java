@@ -16,16 +16,18 @@ public class Winch {
 		
 	}
 	
-	public void coil(double rightJoy)
+	public void coil(double rightJoy, double voltage)
 	{
-		rightJoy = rightJoy * .3;
+		rightJoy = DriveTrain.calculateDeadzone(rightJoy, 0.5);
 		
 		double g = SmartDashboard.getNumber("WinchM", 1);
-		winchMotor.set((rightJoy * g));
+		if (rightJoy == 0.0) {
+			winchMotor.set(0.6 / voltage);
+		} else {
+			winchMotor.set(rightJoy * g);
+		}
 		//SmartDashboard.putNumber("winchOutput", rightJoy * g);
 		SmartDashboard.putNumber("CoilingPower", (rightJoy * g));
-			
-		
 	}
 	
 	

@@ -11,6 +11,16 @@ public class DriveTrain {
 		new SpeedControllerGroup(new Talon(2), new Talon(1))
 	);
 	
+	public static double calculateDeadzone(double value, double zone) {
+		// Set the value to zero if less than the zone
+		if (Math.abs(value) < zone) {
+			return 0;
+		}
+		
+		// Scale the rest of the value range
+		return Math.signum(value) * (Math.abs(value) - zone) / (1.0 - zone);
+	}
+	
 	double RFM = -1;
 	double RBM = 1;
 	double LBM = -1;
@@ -50,9 +60,9 @@ public class DriveTrain {
 		maxTurnPower = SmartDashboard.getNumber("Max Turning Power", maxTurnPower);
 		
 		// Apply deadzone
-		x = (Math.abs(x) < deadzone) ? 0 : x;
-		y = (Math.abs(y) < deadzone) ? 0 : y;
-		r = (Math.abs(r) < deadzone) ? 0 : r;
+		x = calculateDeadzone(x, deadzone);
+		y = calculateDeadzone(y, deadzone);
+		r = calculateDeadzone(r, deadzone);
 		
 		r *= maxTurnPower;
 		
