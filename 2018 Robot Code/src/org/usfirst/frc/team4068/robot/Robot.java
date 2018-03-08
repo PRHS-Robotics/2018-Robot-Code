@@ -245,7 +245,7 @@ public class Robot extends IterativeRobot {
 
 		mainDrive.drive(x, y, r);
 
-		double s = -state.getXboxAxis(1);
+		double s = state.getXboxAxis(1);
 
 		double w = state.getXboxAxis(5);
 

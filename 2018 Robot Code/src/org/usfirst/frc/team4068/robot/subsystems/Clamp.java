@@ -27,9 +27,9 @@ public class Clamp {
 		double screwPower = rawPower;
 		
 		if (screwPower < 0){
-			screwPower = screwPower * .6;
+			screwPower = screwPower * .5;
 		} else {
-			screwPower = screwPower;
+			screwPower = screwPower * .2;
 		}
 		
 		SmartDashboard.putNumber("screwPower", screwPower);
