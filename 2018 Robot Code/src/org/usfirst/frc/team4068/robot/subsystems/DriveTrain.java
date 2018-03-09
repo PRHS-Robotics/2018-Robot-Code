@@ -67,7 +67,7 @@ public class DriveTrain {
 		r *= maxTurnPower;
 		
 		double lfpower = +y + r;
-		double rfpower = +y - r;
+		double rfpower = -y + r;
 		
 		// Apply curved
 		lfpower = Math.signum(lfpower) * (Math.pow(inputCurve, Math.abs(lfpower)) - 1) / (inputCurve - 1);
