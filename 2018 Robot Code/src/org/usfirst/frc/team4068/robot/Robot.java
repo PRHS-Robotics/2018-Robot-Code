@@ -48,6 +48,7 @@ import edu.wpi.first.wpilibj.CameraServer;
  */
 public class Robot extends IterativeRobot {
 	
+	private boolean autonomousFinished = false;
 	
 	private static final int IMG_WIDTH = 640;
 	private static final int IMG_HEIGHT = 480;
@@ -120,6 +121,11 @@ public class Robot extends IterativeRobot {
 					synchronized (voltageLock) {
 						currentVoltage = voltage;
 						SmartDashboard.putNumber("Battery Voltage", currentVoltage);
+						try {
+							Thread.sleep(10);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
 					}
 				}
 			}
@@ -196,7 +202,7 @@ public class Robot extends IterativeRobot {
 		 String gameData;*/
 		
 		//aut.auto(SmartDashboard.getNumber("AutoSpeed", 0.7), true);
-		if (!Robot.this.isAutonomous()) {
+		if (!Robot.this.isAutonomous() || autonomousFinished) {
 			return;
 		}
 		
@@ -212,8 +218,10 @@ public class Robot extends IterativeRobot {
 				
 				drive(input); 
 				
-	    		Thread.sleep((int)Math.round(20.0 * input.getVoltage() / getVoltage()));
+	    		Thread.sleep((int)Math.round(18.0 * Math.pow(input.getVoltage() / getVoltage(), 1.0 / 5.0)));
 			}
+			
+			autonomousFinished = true;
 		}
 		catch (Exception exception) {
 			exception.printStackTrace();
@@ -298,6 +306,8 @@ public class Robot extends IterativeRobot {
 		
 		drive(state);
 		
+		autonomousFinished = false;
+		
 		if (state.getButton(4)) {
 			recorder.recordInput(state);
 		}
@@ -311,6 +321,7 @@ public class Robot extends IterativeRobot {
 					}
 					else {
 						file.delete();
+						file.createNewFile();
 					}
 					FileOutputStream output = new FileOutputStream(file);
 					output.write(recorder.getBytes());
