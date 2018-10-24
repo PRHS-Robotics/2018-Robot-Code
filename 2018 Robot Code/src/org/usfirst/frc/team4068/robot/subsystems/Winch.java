@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Winch {
 	
-	Talon winchMotor = new Talon(7);//Changeable
+	Talon winchMotor = new Talon(6);//Changeable
 	//SmartDashboard.putNumber("winchInput")
 	
 	public Winch()
@@ -21,11 +21,7 @@ public class Winch {
 		rightJoy = DriveTrain.calculateDeadzone(rightJoy, 0.5);
 		
 		double g = SmartDashboard.getNumber("WinchM", 1);
-		if (rightJoy == 0.0) {
-			winchMotor.set(0.6 / voltage);
-		} else {
-			winchMotor.set(rightJoy * g);
-		}
+		winchMotor.set(rightJoy * g);
 		//SmartDashboard.putNumber("winchOutput", rightJoy * g);
 		SmartDashboard.putNumber("CoilingPower", (rightJoy * g));
 	}

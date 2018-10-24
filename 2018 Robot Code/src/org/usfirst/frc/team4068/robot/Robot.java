@@ -53,8 +53,6 @@ public class Robot extends IterativeRobot {
 	private static final int IMG_WIDTH = 640;
 	private static final int IMG_HEIGHT = 480;
 	
-	private static double currentVoltage;
-	
 	boolean saveDebounce = false;
 
 	Joystick driveStick = new Joystick(1);
@@ -82,8 +80,6 @@ public class Robot extends IterativeRobot {
 			"Center",
 			"Right"
 	};
-	
-	private Object voltageLock = new Object();
 
 	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 	public static OI oi;
@@ -113,23 +109,6 @@ public class Robot extends IterativeRobot {
 		//SmartDashboard.putNumber("Auto Turn Time", 25);
 		SmartDashboard.putNumber("Driver Station - 0 = Left, 1 = Center, 2 = Right", 0);
 		aut.auto(0.0, false, 3);
-		
-		new Thread() {
-			public void run() {
-				while (true) {
-					double voltage = PowerJNI.getVinVoltage();
-					synchronized (voltageLock) {
-						currentVoltage = voltage;
-						SmartDashboard.putNumber("Battery Voltage", currentVoltage);
-						try {
-							Thread.sleep(10);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-					}
-				}
-			}
-		}.start();
 	}
 
 	/**
@@ -218,7 +197,7 @@ public class Robot extends IterativeRobot {
 				
 				drive(input); 
 				
-	    		Thread.sleep((int)Math.round(18.0 * Math.pow(input.getVoltage() / getVoltage(), 1.0 / 5.0)));
+	    		Thread.sleep((int)Math.round(20));// * Math.pow(input.getVoltage() / getVoltage(), 1.0 / 5.0)));
 			}
 			
 			autonomousFinished = true;
@@ -327,8 +306,8 @@ public class Robot extends IterativeRobot {
 					output.write(recorder.getBytes());
 					output.close();
 					System.out.println("Successfully saved program " + getProgramName());
-					System.out.println("Length " + recorder.getSize() + ", or " + recorder.getSize() / recorder.getFrameSize() + " input frames");
 					System.out.println("Program should run for about " + recorder.getSize() / recorder.getFrameSize() * 20.0 / 1000.0 + " seconds.");
+					System.out.println("Length " + recorder.getSize() + ", or " + recorder.getSize() / recorder.getFrameSize() + " input frames");
 					recorder = new Recorder();
 				}
 				catch (Exception exception) {
@@ -343,9 +322,7 @@ public class Robot extends IterativeRobot {
 	}
 	
 	private double getVoltage() {
-		synchronized (voltageLock) {
-			return currentVoltage;
-		}
+		return 0.0;
 	}
 
 	/**
